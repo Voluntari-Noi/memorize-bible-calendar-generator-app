@@ -153,9 +153,16 @@ function generate_plan(number_of_days, start_date, verses_per_day) {
   return result;
 }
 
+function short_verse(verse) {
+  let result = [];
+  const tokens = verse.match(/([a-zA-ZÀ-ÿăâîșțĂÂÎȘȚ]+)|(\s)|[^\w\s]/g);
+  const firstChars = tokens.map((token) => token.charAt(0));
+  return firstChars.join('');
+}
+
 function verse_text(verse, short = false) {
   if (short) {
-    let res = verse.replace(/(\S)\S*/g, "$1");
+    let res = short_verse(verse);
     return res;
   }
 
