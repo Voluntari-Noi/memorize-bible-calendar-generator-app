@@ -20,7 +20,11 @@
           <span>Câte versete pe zi?</span> <input type="number" id="verses-per-day" value="2" />
         </div>
         <div>
+          <span>Cu ce verset începi?</span> <input type="text" id="reference-start" value="Galateni 1:1" />
+        </div>
+        <div>
           <button id="generate">Generează planul</button>
+          <button id="export" style="display: none;">Descarcă planul</button>
         </div>
       </div>
       <div id="result">
@@ -32,6 +36,8 @@
   src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
   crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.25.0/tableExport.min.js" integrity="sha256-fnln5R1lyNAr10g3D8dESGjNKheNOCiqMnPrnsKFlCY=" crossorigin="anonymous"></script>
 
 <script>
   function format_date(date) {
@@ -64,11 +70,11 @@
       result.push({
         day: day_index,
         date: days[day_index],
-        verse_start: parseInt(start_verse),
-        verse_stop: parseInt(start_verse) + parseInt(verses_per_day)
+        verse_start: parseInt(start_verse) + 1,
+        verse_stop: parseInt(start_verse) + parseInt(verses_per_day) + 1
       });
 
-      start_verse = parseInt(start_verse) + parseInt(verses_per_day);
+      start_verse = parseInt(start_verse) + parseInt(verses_per_day) + 1;
     }
 
     return result;
@@ -101,8 +107,8 @@
           "<td> Ziua " +
             (parseInt(item.day) + 1) +
           "</td>" +
-          "<td>" +
-            (item.verse_start + "-" + item.verse_stop) +
+          "<td> Galateni 1:" +
+            (item.verse_start + " - Galateni 1:" + item.verse_stop) +
           "</td>" +
         "</tr>";
     }
@@ -127,7 +133,13 @@
       console.log(plan);
 
       show_plan(plan);
-    })
+      $("button#export").show();
+    });
+
+    $("button#export").on("click", function () {
+      $("table").tableExport();
+      console.log("Download...");
+    });
   });
 </script>
 <style>
@@ -164,6 +176,10 @@ div#form-container div {
 div#form-container span {
   display: inline-block;
   min-width: 150px;
+}
+
+button {
+  padding: 10px;
 }
 </style>
   </body>
