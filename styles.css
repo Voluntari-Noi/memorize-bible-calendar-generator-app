@@ -5,6 +5,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto&display=swap');
 
+table td.yesterday, table th.yesterday {
+  background: #ffffde;
+}
+
+table td.today, table th.today {
+  background: #ecf3d0;
+}
+
 body {
   background: #bca371;
   font-family: 'Roboto', sans-serif;

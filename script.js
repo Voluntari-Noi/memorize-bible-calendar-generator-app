@@ -143,8 +143,14 @@ function generate_plan(number_of_days, start_date, verses_per_day) {
     result.push({
       day: day_index,
       date: days[day_index],
-      verse_start: parseInt(start_verse),
-      verse_stop: parseInt(start_verse) + parseInt(verses_per_day) - 1
+      today: {
+        verse_start: parseInt(start_verse),
+        verse_stop: parseInt(start_verse) + parseInt(verses_per_day) - 1
+      },
+      yesterday: {
+        verse_start: parseInt(start_verse) - parseInt(verses_per_day),
+        verse_stop: parseInt(start_verse) + parseInt(verses_per_day) - 1 - parseInt(verses_per_day)
+      },
     });
 
     start_verse = parseInt(start_verse) + parseInt(verses_per_day);
@@ -201,7 +207,10 @@ function show_plan(plan) {
       "<th>" +
         "Ziua" +
       "</th>" +
-      "<th>" +
+      "<th class='yesterday'>" +
+        "Versetele de ieri" +
+      "</th>" +
+      "<th class='today'>" +
         "Versetele noi de memorat" +
       "</th>" +
       optional_show_long_text +
@@ -213,22 +222,35 @@ function show_plan(plan) {
   for (item of plan) {
     let optional_show_long_text_b = "";
     if ($("#include-texts").is(':checked')) {
-      optional_show_long_text_b = "<td>" + full_text_verses(item.verse_start, item.verse_stop, false) + "</td>"
+      optional_show_long_text_b = "<td>" + full_text_verses(item.today.verse_start, item.today.verse_stop, false) + "</td>"
     }
 
     let optional_show_short_text_b = "";
     if ($("#include-texts-short").is(':checked')) {
-      optional_show_short_text_b = "<td>" + full_text_verses(item.verse_start, item.verse_stop, true) + "</td>"
+      optional_show_short_text_b = "<td>" + full_text_verses(item.today.verse_start, item.today.verse_stop, true) + "</td>"
     }
 
-    let references = "";
-    if (item.verse_start === item.verse_stop) {
-      references =
-        window.settings.verses[item.verse_start].reference;
+    let yesterday_references = "";
+    if (item.yesterday.verse_start === item.yesterday.verse_stop) {
+      yesterday_references =
+        window.settings.verses[item.yesterday.verse_start]?.reference;
     } else {
-      references =
-          (window.settings.verses[item.verse_start].reference + " - "
-         + window.settings.verses[item.verse_stop].reference);
+      yesterday_references =
+          (window.settings.verses[item.yesterday.verse_start]?.reference + " - "
+         + window.settings.verses[item.yesterday.verse_stop]?.reference);
+    }
+    if (yesterday_references === 'undefined' || yesterday_references === 'undefined - undefined') {
+      yesterday_references = "";
+    }
+
+    let today_references = "";
+    if (item.today.verse_start === item.today.verse_stop) {
+      today_references =
+        window.settings.verses[item.today.verse_start].reference;
+    } else {
+      today_references =
+          (window.settings.verses[item.today.verse_start].reference + " - "
+         + window.settings.verses[item.today.verse_stop].reference);
     }
 
     html_b +=
@@ -239,7 +261,9 @@ function show_plan(plan) {
         "<td> Ziua " +
           (parseInt(item.day) + 1) +
         "</td>" +
-        "<td>" + references +
+        "<td class='yesterday'>" + yesterday_references +
+        "</td>" +
+        "<td class='today'>" + today_references +
         "</td>" +
          optional_show_long_text_b +
          optional_show_short_text_b +
