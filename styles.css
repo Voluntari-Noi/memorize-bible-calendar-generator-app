@@ -64,3 +64,21 @@ button#export {
   background: #32965d;
   color: white;
 }
+
+@media screen and ( max-width: 600px ) {
+  table {
+    border: none;
+    max-width: calc(100% - 20px);
+  }
+
+  table tr td,
+  table tr th {
+    width: 100%;
+    float: left;
+    border: none;
+  }
+
+  table tr {
+    border-bottom: 1px solid #ddd;
+  }
+}
