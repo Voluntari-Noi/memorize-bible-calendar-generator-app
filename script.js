@@ -153,16 +153,25 @@ function generate_plan(number_of_days, start_date, verses_per_day) {
   return result;
 }
 
-function full_text_verses (start, stop) {
+function verse_text(verse, short = false) {
+  if (short) {
+    let res = verse.replace(/(\S)\S*/g, "$1");
+    return res;
+  }
+
+  return verse;
+}
+
+function full_text_verses(start, stop, short = false) {
+
   let text = "";
   for (let verse_index = start; verse_index <= stop; verse_index++) {
     text += "<p>"
       + window.settings.verses[verse_index].reference + ": "
-      + window.settings.verses[verse_index].text
+      + verse_text(window.settings.verses[verse_index].text, short)
       + "</p>";
   }
 
-  console.log(text);
   return text;
 }
 
@@ -172,6 +181,11 @@ function show_plan(plan) {
   let optional_show_long_text = "";
   if ($("#include-texts").is(':checked')) {
     optional_show_long_text = "<th>Versete</th>";
+  }
+
+  let optional_show_short_text = "";
+  if ($("#include-texts-short").is(':checked')) {
+    optional_show_short_text = "<th>Versete prescurtate</th>";
   }
 
   let html_plan = "<table><thead>" +
@@ -186,6 +200,7 @@ function show_plan(plan) {
         "Versetele noi de memorat" +
       "</th>" +
       optional_show_long_text +
+      optional_show_short_text +
     "</tr></thead>";
 
   let html_b = "<tbody>";
@@ -193,7 +208,12 @@ function show_plan(plan) {
   for (item of plan) {
     let optional_show_long_text_b = "";
     if ($("#include-texts").is(':checked')) {
-      optional_show_long_text_b = "<td>" + full_text_verses(item.verse_start, item.verse_stop) + "</td>"
+      optional_show_long_text_b = "<td>" + full_text_verses(item.verse_start, item.verse_stop, false) + "</td>"
+    }
+
+    let optional_show_short_text_b = "";
+    if ($("#include-texts-short").is(':checked')) {
+      optional_show_short_text_b = "<td>" + full_text_verses(item.verse_start, item.verse_stop, true) + "</td>"
     }
 
     html_b +=
@@ -209,6 +229,7 @@ function show_plan(plan) {
          + window.settings.verses[item.verse_stop].reference) +
         "</td>" +
          optional_show_long_text_b +
+         optional_show_short_text_b +
       "</tr>";
   }
 
