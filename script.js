@@ -181,7 +181,8 @@ function show_plan(plan) {
           (parseInt(item.day) + 1) +
         "</td>" +
         "<td>" +
-          (item.verse_start + " - " + item.verse_stop) +
+          (window.settings.verses[item.verse_start].reference + " - "
+         + window.settings.verses[item.verse_stop].reference) +
         "</td>" +
       "</tr>";
   }
