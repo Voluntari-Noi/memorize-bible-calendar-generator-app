@@ -16,6 +16,9 @@
         <span>Câte zile?</span> <input type="number" id="number-of-days" value="10" />
       </div>
       <div>
+        <span>Câte versete pe zi?</span> <input type="number" id="verses-per-day" value="2" />
+      </div>
+      <div>
         <button id="generate">Generează planul</button>
       </div>
     </div>
@@ -27,13 +30,41 @@
   crossorigin="anonymous"></script>
 
 <script>
-  function generate_consecutive_days(number_of_days) {
+  function format_date(date) {
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+    var yyyy = date.getFullYear();
+
+    return dd + '/' + mm + '/' + yyyy;
+  }
+
+  function generate_consecutive_days(number_of_days, start_date) {
     let result = [];
 
     for(let i = 0; i < number_of_days; i++) {
-        let item_date = new Date();
+        let item_date = new Date(start_date);
         item_date.setDate(item_date.getDate() + i);
-        result.push(item_date);
+        result.push(format_date(item_date));
+    }
+
+    return result;
+  }
+
+  function generate_plan(number_of_days, start_date, verses_per_day) {
+    let days = generate_consecutive_days(number_of_days, start_date);
+
+    let start_verse = 0;
+    let result = [];
+
+    for(let day_index = 0; day_index < number_of_days; day_index++) {
+      result.push({
+        day: day_index,
+        date: days[day_index],
+        verse_start: parseInt(start_verse),
+        verse_stop: parseInt(start_verse) + parseInt(verses_per_day)
+      });
+
+      start_verse = parseInt(start_verse) + parseInt(verses_per_day);
     }
 
     return result;
@@ -48,7 +79,9 @@
 
     $("button#generate").on("click", function () {
       let days = $("input#number-of-days").val();
-      console.log(generate_consecutive_days(days));
+      let start_date = $("input#start-date").val();
+      let verses_per_day = $("input#verses-per-day").val();
+      console.log(generate_plan(days, start_date, verses_per_day));
     })
   });
 </script>
