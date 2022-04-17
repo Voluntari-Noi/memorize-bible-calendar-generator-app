@@ -216,6 +216,16 @@ function show_plan(plan) {
       optional_show_short_text_b = "<td>" + full_text_verses(item.verse_start, item.verse_stop, true) + "</td>"
     }
 
+    let references = "";
+    if (item.verse_start === item.verse_stop) {
+      references =
+        window.settings.verses[item.verse_start].reference;
+    } else {
+      references =
+          (window.settings.verses[item.verse_start].reference + " - "
+         + window.settings.verses[item.verse_stop].reference);
+    }
+
     html_b +=
       "<tr>" +
         "<td>" +
@@ -224,9 +234,7 @@ function show_plan(plan) {
         "<td> Ziua " +
           (parseInt(item.day) + 1) +
         "</td>" +
-        "<td>" +
-          (window.settings.verses[item.verse_start].reference + " - "
-         + window.settings.verses[item.verse_stop].reference) +
+        "<td>" + references +
         "</td>" +
          optional_show_long_text_b +
          optional_show_short_text_b +
