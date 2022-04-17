@@ -154,7 +154,8 @@ function generate_plan(number_of_days, start_date, verses_per_day) {
 }
 
 function short_verse(verse) {
-  return verse.replace(/([^\p{L}\s]*\p{L})\p{L}*/gu, "$1");
+  let verse1=verse.replace(/-/g, '');
+  return verse1.replace(/([^\p{L}\s]*\p{L})\p{L}*/gu, "$1");
 }
 
 function verse_text(verse, short = false) {
