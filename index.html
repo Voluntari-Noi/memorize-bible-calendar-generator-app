@@ -29,7 +29,16 @@
           <span>Câte versete pe zi?</span> <input type="number" id="verses-per-day" value="2" />
         </div>
         <div>
-          <span>Cu ce verset începi?</span> <input type="text" id="reference-start" value="Galateni 1:1" />
+          <span>Cu ce verset începi?</span>
+          <select class="form-select select-start-book" aria-label="Default select example">
+            <option selected hidden>Cartea</option>
+          </select>
+          <select class="form-select select-start-chapter" aria-label="Default select example">
+            <option selected hidden>Capitolul</option>
+          </select>
+          <select class="form-select select-start-verse" aria-label="Default select example">
+            <option selected hidden>Versetul</option>
+          </select>
         </div>
         <div>
           <button id="generate">
@@ -53,6 +62,8 @@
       crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.25.0/tableExport.min.js" integrity="sha256-fnln5R1lyNAr10g3D8dESGjNKheNOCiqMnPrnsKFlCY=" crossorigin="anonymous"></script>
+    <script src="bible_cornilescu_new.js?v=100"></script>
+    <script src="bible.js?v=100"></script>
     <script src="script.js"></script>
   </body>
 </html>

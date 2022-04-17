@@ -1,3 +1,116 @@
+window.settings = {
+  start: {
+    book: "Cartea",
+    chapter: "Capitolul",
+    verse: "Versetul"
+  },
+  stop: {
+    book: "Cartea",
+    chapter: "Capitolul",
+    verse: "Versetul"
+  },
+  verses: [
+    {
+      reference: "Geneza 1:1",
+      text: "La început...",
+      correct: false,
+      tried: false,
+    },
+    {
+      reference: "Geneza 1:2",
+      text: "Demo text",
+      correct: false,
+      tried: false,
+    },
+    {
+      reference: "Geneza 1:3",
+      text: "Demo text",
+      correct: false,
+      tried: false,
+    },
+  ],
+  all_texts: [],
+};
+
+function init_books_select() {
+  for (let book of window.books) {
+    $('select.select-start-book').append($('<option>', {
+      value: book,
+      text: book
+    }));
+    $('select.select-stop-book').append($('<option>', {
+      value: book,
+      text: book
+    }));
+  }
+}
+
+function search_book(book_name) {
+  var index = 0;
+  for (let book of window.books) {
+    if (book === book_name) {
+      return index;
+    }
+    index++;
+  }
+
+  return -1;
+}
+
+function init_verses_select(chapter, select) {
+  // input: selected chapter, start/stop
+  // Init the verses select based on current start/stop book and chapter
+  const book_index = search_book(window.settings[select].book);
+  const verses = window.bible_cornilescu[book_index].chapters[chapter-1].length;
+
+  if (select === "start") {
+    $('select.select-start-verse').html("<option selected hidden>Versetul</option>");
+    for (let verse = 1; verse <= verses; verse++) {
+      $('select.select-start-verse').append($('<option>', {
+        value: verse,
+        text: "Versetul " + verse
+      }));
+    }
+  }
+
+  if (select === "stop") {
+    $('select.select-stop-verse').html("<option selected hidden>Versetul</option>");
+    for (let verse = 1; verse <= verses; verse++) {
+      $('select.select-stop-verse').append($('<option>', {
+        value: verse,
+        text: "Versetul " + verse
+      }));
+    }
+  }
+}
+
+function init_chapters_select(book_name, select) {
+  // input: romanian book name, start/stop
+  // Init the chapters select (start or stop) with real chapters for given book
+  const book_index = search_book(book_name);
+  const book_chapters = window.bible_cornilescu[book_index].chapters.length;
+
+  if (select === "start") {
+    $('select.select-start-chapter').html("<option selected hidden>Capitolul</option>");
+    for (let chapter = 1; chapter <= book_chapters; chapter++) {
+      $('select.select-start-chapter').append($('<option>', {
+        value: chapter,
+        text: "Capitolul " + chapter
+      }));
+    }
+  }
+
+  if (select === "stop") {
+    $('select.select-stop-chapter').html("<option selected hidden>Capitolul</option>");
+    for (let chapter = 1; chapter <= book_chapters; chapter++) {
+      $('select.select-stop-chapter').append($('<option>', {
+        value: chapter,
+        text: "Capitolul " + chapter
+      }));
+    }
+  }
+}
+
 function format_date(date) {
   var dd = String(date.getDate()).padStart(2, '0');
   var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
@@ -78,6 +191,7 @@ function show_plan(plan) {
 
 function init() {
   document.getElementById('start-date').valueAsDate = new Date();
+  init_books_select();
 }
 
 $(document).ready(function () {
@@ -97,5 +211,46 @@ $(document).ready(function () {
   $("button#export").on("click", function () {
     $("table").tableExport();
     console.log("Download...");
+  });
+
+  $("select.form-select").on("change", function() {
+    if($(this).hasClass("select-start-book")) {
+      window.settings.start.book = this.value;
+      init_chapters_select(this.value, "start");
+      init_verses_select(1, "start");
+      if ($("select.select-stop-book").val() === "Cartea") {
+        // Most expected book to be the same
+        $("select.select-stop-book").val(this.value).change();
+      }
+    }
+    if($(this).hasClass("select-start-chapter")) {
+      window.settings.start.chapter = this.value;
+      init_verses_select(this.value, "start");
+      if ($("select.select-stop-chapter").val() === "Capitolul") {
+        // Most expected chapter to be the same
+        $("select.select-stop-chapter").val(this.value).change();
+      }
+    }
+    if($(this).hasClass("select-start-verse")) {
+      window.settings.start.verse = this.value;
+      if ($("select.select-stop-verse").val() === "Versetul") {
+        $("select.select-stop-verse").val(
+          // Most expected verse to be the last in the selected chapter
+          $("select.select-stop-verse option").last().val()
+        ).change();
+      }
+    }
+    if($(this).hasClass("select-stop-book")) {
+      window.settings.stop.book = this.value;
+      init_chapters_select(this.value, "stop");
+      init_verses_select(1, "stop");
+    }
+    if($(this).hasClass("select-stop-chapter")) {
+      window.settings.stop.chapter = this.value;
+      init_verses_select(this.value, "stop");
+    }
+    if($(this).hasClass("select-stop-verse")) {
+      window.settings.stop.verse = this.value;
+    }
   });
 });
