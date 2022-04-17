@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="styles.css" />
 
     <title>Memorează Biblia - Plan de memorare</title>
   </head>
@@ -46,183 +47,12 @@
       </div>
     </div>
 
-<script
-  src="https://code.jquery.com/jquery-3.6.0.min.js"
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-  crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.25.0/tableExport.min.js" integrity="sha256-fnln5R1lyNAr10g3D8dESGjNKheNOCiqMnPrnsKFlCY=" crossorigin="anonymous"></script>
-
-<script>
-  function format_date(date) {
-    var dd = String(date.getDate()).padStart(2, '0');
-    var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
-    var yyyy = date.getFullYear();
-
-    return dd + '.' + mm + '.' + yyyy;
-  }
-
-  function generate_consecutive_days(number_of_days, start_date) {
-    let result = [];
-
-    for (let i = 0; i < number_of_days; i++) {
-        let item_date = new Date(start_date);
-        item_date.setDate(item_date.getDate() + i);
-        result.push(format_date(item_date));
-    }
-
-    return result;
-  }
-
-  function generate_plan(number_of_days, start_date, verses_per_day) {
-    let days = generate_consecutive_days(number_of_days, start_date);
-
-    let start_verse = 0;
-    let result = [];
-
-    for (let day_index = 0; day_index < number_of_days; day_index++) {
-      result.push({
-        day: day_index,
-        date: days[day_index],
-        verse_start: parseInt(start_verse) + 1,
-        verse_stop: parseInt(start_verse) + parseInt(verses_per_day) + 1
-      });
-
-      start_verse = parseInt(start_verse) + parseInt(verses_per_day) + 1;
-    }
-
-    return result;
-  }
-
-  function show_plan(plan) {
-    $("div#result").html("");
-
-    let html_plan = "<table><thead>" +
-      "<tr>" +
-        "<th>" +
-          "Data" +
-        "</th>" +
-        "<th>" +
-          "Ziua" +
-        "</th>" +
-        "<th>" +
-          "Versetele noi de memorat" +
-        "</th>" +
-      "</tr></thead>";
-
-    let html_b = "<tbody>";
-
-    for (item of plan) {
-      html_b +=
-        "<tr>" +
-          "<td>" +
-            item.date +
-          "</td>" +
-          "<td> Ziua " +
-            (parseInt(item.day) + 1) +
-          "</td>" +
-          "<td> Galateni 1:" +
-            (item.verse_start + " - Galateni 1:" + item.verse_stop) +
-          "</td>" +
-        "</tr>";
-    }
-
-    html_plan += html_b;
-    html_plan += "</tbody></table>";
-    $("div#result").append(html_plan);
-  }
-
-  function init() {
-    document.getElementById('start-date').valueAsDate = new Date();
-  }
-
-  $(document).ready(function () {
-    init();
-
-    $("button#generate").on("click", function () {
-      let days = $("input#number-of-days").val();
-      let start_date = $("input#start-date").val();
-      let verses_per_day = $("input#verses-per-day").val();
-      let plan = generate_plan(days, start_date, verses_per_day);
-      console.log(plan);
-
-      show_plan(plan);
-      $("button#export").show();
-    });
-
-    $("button#export").on("click", function () {
-      $("table").tableExport();
-      console.log("Download...");
-    });
-  });
-</script>
-<style>
-/* https://coolors.co/c97064-bca371-a6b07e-68a357-32965d */
-/* #c97064 #bca371 #a6b07e #68a357 #32965d
-                   #e9e0cf
- */
-
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto&display=swap');
-
-body {
-  background: #bca371;
-  font-family: 'Roboto', sans-serif;
-}
-
-h1 {
-  font-family: 'Great Vibes', cursive;
-  font-size: 40px;
-  font-weight: 100;
-}
-
-div.container {
-  margin: 20px;
-  background: #e9e0cf;
-  padding: 20px;
-}
-
-div#result {
-  background: #FFF;
-  padding: 10px;
-}
-
-table {
-  border-collapse: collapse;
-}
-
-table, th, td {
-  border: 1px solid #CCC;
-  text-align: left;
-}
-
-table th, table td {
-  padding: 2px 5px;
-}
-
-div#form-container div {
-  margin-bottom: 20px;
-}
-
-div#form-container span {
-  display: inline-block;
-  min-width: 150px;
-}
-
-button {
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-}
-
-button#generate {
-  background: #c97064;
-  color: white;
-}
-
-button#export {
-  background: #32965d;
-  color: white;
-}
-</style>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.25.0/tableExport.min.js" integrity="sha256-fnln5R1lyNAr10g3D8dESGjNKheNOCiqMnPrnsKFlCY=" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
   </body>
 </html>
