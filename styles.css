@@ -13,6 +13,18 @@ table td.today, table th.today {
   background: #ecf3d0;
 }
 
+table td.repeat2, table th.repeat2 {
+  background: #e1dced;
+}
+
+table td.repeat3, table th.repeat3 {
+  background: #e6eaf1;
+}
+
+table td.repeat4, table th.repeat4 {
+  background: #f1e6e9;
+}
+
 body {
   background: #bca371;
   font-family: 'Roboto', sans-serif;

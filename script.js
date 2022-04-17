@@ -151,6 +151,18 @@ function generate_plan(number_of_days, start_date, verses_per_day) {
         verse_start: parseInt(start_verse) - parseInt(verses_per_day),
         verse_stop: parseInt(start_verse) + parseInt(verses_per_day) - 1 - parseInt(verses_per_day)
       },
+      repeat2: {
+        verse_start: parseInt(start_verse) - (7 * parseInt(verses_per_day)),
+        verse_stop: parseInt(start_verse) + parseInt(verses_per_day) - 1 - (7 * parseInt(verses_per_day))
+      },
+      repeat3: {
+        verse_start: parseInt(start_verse) - (14 * parseInt(verses_per_day)),
+        verse_stop: parseInt(start_verse) + parseInt(verses_per_day) - 1 - (14 * parseInt(verses_per_day))
+      },
+      repeat4: {
+        verse_start: parseInt(start_verse) - (21 * parseInt(verses_per_day)),
+        verse_stop: parseInt(start_verse) + parseInt(verses_per_day) - 1 - (21 * parseInt(verses_per_day))
+      }
     });
 
     start_verse = parseInt(start_verse) + parseInt(verses_per_day);
@@ -213,6 +225,15 @@ function show_plan(plan) {
       "<th class='today'>" +
         "Versetele noi de memorat" +
       "</th>" +
+      "<th class='repeat2'>" +
+        "Seria 2 de repetare" +
+      "</th>" +
+      "<th class='repeat3'>" +
+        "Seria 3 de repetare" +
+      "</th>" +
+      "<th class='repeat4'>" +
+        "Seria 4 de repetare" +
+      "</th>" +
       optional_show_long_text +
       optional_show_short_text +
     "</tr></thead>";
@@ -239,7 +260,7 @@ function show_plan(plan) {
           (window.settings.verses[item.yesterday.verse_start]?.reference + " - "
          + window.settings.verses[item.yesterday.verse_stop]?.reference);
     }
-    if (yesterday_references === 'undefined' || yesterday_references === 'undefined - undefined') {
+    if (yesterday_references === undefined || yesterday_references === 'undefined - undefined') {
       yesterday_references = "";
     }
 
@@ -253,6 +274,45 @@ function show_plan(plan) {
          + window.settings.verses[item.today.verse_stop].reference);
     }
 
+    let repeat2_references = "";
+    if (item.repeat2.verse_start === item.repeat2.verse_stop) {
+      repeat2_references =
+        window.settings.verses[item.repeat2.verse_start]?.reference;
+    } else {
+      repeat2_references =
+          (window.settings.verses[item.repeat2.verse_start]?.reference + " - "
+         + window.settings.verses[item.repeat2.verse_stop]?.reference);
+    }
+    if (repeat2_references === undefined || repeat2_references === 'undefined - undefined') {
+      repeat2_references = "";
+    }
+
+    let repeat3_references = "";
+    if (item.repeat3.verse_start === item.repeat3.verse_stop) {
+      repeat3_references =
+        window.settings.verses[item.repeat3.verse_start]?.reference;
+    } else {
+      repeat3_references =
+          (window.settings.verses[item.repeat3.verse_start]?.reference + " - "
+         + window.settings.verses[item.repeat3.verse_stop]?.reference);
+    }
+    if (repeat3_references === undefined || repeat3_references === 'undefined - undefined') {
+      repeat3_references = "";
+    }
+
+    let repeat4_references = "";
+    if (item.repeat4.verse_start === item.repeat4.verse_stop) {
+      repeat4_references =
+        window.settings.verses[item.repeat4.verse_start]?.reference;
+    } else {
+      repeat4_references =
+          (window.settings.verses[item.repeat4.verse_start]?.reference + " - "
+         + window.settings.verses[item.repeat4.verse_stop]?.reference);
+    }
+    if (repeat4_references === undefined || repeat4_references === 'undefined - undefined') {
+      repeat4_references = "";
+    }
+
     html_b +=
       "<tr>" +
         "<td>" +
@@ -264,6 +324,12 @@ function show_plan(plan) {
         "<td class='yesterday'>" + yesterday_references +
         "</td>" +
         "<td class='today'>" + today_references +
+        "</td>" +
+        "<td class='repeat2'>" + repeat2_references +
+        "</td>" +
+        "<td class='repeat3'>" + repeat3_references +
+        "</td>" +
+        "<td class='repeat4'>" + repeat4_references +
         "</td>" +
          optional_show_long_text_b +
          optional_show_short_text_b +
