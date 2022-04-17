@@ -3,13 +3,21 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+
     <title>Memorează Biblia - Plan de memorare</title>
   </head>
   <body>
     <div class="container">
-      <h1>Memorează Biblia - Plan de memorare</h1>
-      <p>Generează-ți un plan de memorare a versetelor din Biblie.</p>
+      <h1>
+        <i class="far fa-calendar-check"></i>
+        Memorează Biblia - Plan de memorare
+      </h1>
       <div id="form-container">
+        <div>
+          <p>Generează-ți un plan de memorare a versetelor din Biblie.</p>
+        </div>
         <div>
           <span>Când începi?</span> <input type="date" id="start-date" />
         </div>
@@ -23,8 +31,14 @@
           <span>Cu ce verset începi?</span> <input type="text" id="reference-start" value="Galateni 1:1" />
         </div>
         <div>
-          <button id="generate">Generează planul</button>
-          <button id="export" style="display: none;">Descarcă planul</button>
+          <button id="generate">
+            <i class="fas fa-play-circle"></i>
+            Generează planul
+          </button>
+          <button id="export" style="display: none;">
+            <i class="fas fa-file-download"></i>
+            Descarcă planul
+          </button>
         </div>
       </div>
       <div id="result">
@@ -143,13 +157,28 @@
   });
 </script>
 <style>
+/* https://coolors.co/c97064-bca371-a6b07e-68a357-32965d */
+/* #c97064 #bca371 #a6b07e #68a357 #32965d
+                   #e9e0cf
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto&display=swap');
+
 body {
-  background: #999;
+  background: #bca371;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 40px;
+  font-weight: 100;
 }
 
 div.container {
-  background: #DDD;
-  padding: 10px;
+  margin: 20px;
+  background: #e9e0cf;
+  padding: 20px;
 }
 
 div#result {
@@ -162,15 +191,16 @@ table {
 }
 
 table, th, td {
-  border: 1px solid black;
+  border: 1px solid #CCC;
+  text-align: left;
 }
 
 table th, table td {
-  padding: 2px;
+  padding: 2px 5px;
 }
 
 div#form-container div {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 div#form-container span {
@@ -180,6 +210,18 @@ div#form-container span {
 
 button {
   padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button#generate {
+  background: #c97064;
+  color: white;
+}
+
+button#export {
+  background: #32965d;
+  color: white;
 }
 </style>
   </body>
