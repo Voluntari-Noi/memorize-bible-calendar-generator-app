@@ -8,5 +8,49 @@
   <body>
     <h1>Memorează Biblia - Plan de memorare</h1>
     <p>Generează-ți un plan de memorare a versetelor din Biblie.</p>
+    <div id="form-container">
+      <div>
+        <span>Când începi?</span> <input type="date" id="start-date" />
+      </div>
+      <div>
+        <span>Câte zile?</span> <input type="number" id="number-of-days" value="10" />
+      </div>
+      <div>
+        <button id="generate">Generează planul</button>
+      </div>
+    </div>
+    <div id="result"></div>
+
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+<script>
+  function generate_consecutive_days(number_of_days) {
+    let result = [];
+
+    for(let i = 0; i < number_of_days; i++) {
+        let item_date = new Date();
+        item_date.setDate(item_date.getDate() + i);
+        result.push(item_date);
+    }
+
+    return result;
+  }
+
+  function init() {
+    document.getElementById('start-date').valueAsDate = new Date();
+  }
+
+  $(document).ready(function () {
+    init();
+
+    $("button#generate").on("click", function () {
+      let days = $("input#number-of-days").val();
+      console.log(generate_consecutive_days(days));
+    })
+  });
+</script>
   </body>
 </html>
