@@ -12,14 +12,26 @@ body {
 
 h1 {
   font-family: 'Great Vibes', cursive;
-  font-size: 40px;
+  font-size: 30px;
   font-weight: 100;
+  color: white;
+  text-align: center;
 }
 
 div.container {
-  margin: 20px;
+  margin: 0px 20px 0px 20px;
   background: #e9e0cf;
   padding: 20px;
+}
+
+div.container.header {
+  background: #c97064;
+}
+
+div.container.footer {
+  margin-top: 0px;
+  background: #a6b07e;
+  text-align: center;
 }
 
 div#result {
@@ -91,5 +103,10 @@ button#export {
 
   div#form-container div select {
     margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    margin: 5px 0px 5px 0px;
   }
 }
