@@ -153,8 +153,26 @@ function generate_plan(number_of_days, start_date, verses_per_day) {
   return result;
 }
 
+function full_text_verses (start, stop) {
+  let text = "";
+  for (let verse_index = start; verse_index <= stop; verse_index++) {
+    text += "<p>"
+      + window.settings.verses[verse_index].reference + ": "
+      + window.settings.verses[verse_index].text
+      + "</p>";
+  }
+
+  console.log(text);
+  return text;
+}
+
 function show_plan(plan) {
   $("div#result").html("");
+
+  let optional_show_long_text = "";
+  if ($("#include-texts").is(':checked')) {
+    optional_show_long_text = "<th>Versete</th>";
+  }
 
   let html_plan = "<table><thead>" +
     "<tr>" +
@@ -167,11 +185,17 @@ function show_plan(plan) {
       "<th>" +
         "Versetele noi de memorat" +
       "</th>" +
+      optional_show_long_text +
     "</tr></thead>";
 
   let html_b = "<tbody>";
 
   for (item of plan) {
+    let optional_show_long_text_b = "";
+    if ($("#include-texts").is(':checked')) {
+      optional_show_long_text_b = "<td>" + full_text_verses(item.verse_start, item.verse_stop) + "</td>"
+    }
+
     html_b +=
       "<tr>" +
         "<td>" +
@@ -184,6 +208,7 @@ function show_plan(plan) {
           (window.settings.verses[item.verse_start].reference + " - "
          + window.settings.verses[item.verse_stop].reference) +
         "</td>" +
+         optional_show_long_text_b +
       "</tr>";
   }
 

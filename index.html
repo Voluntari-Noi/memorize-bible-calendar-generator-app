@@ -23,7 +23,7 @@
           <span>Când începi?</span> <input type="date" id="start-date" />
         </div>
         <div>
-          <span>Câte zile?</span> <input type="number" id="number-of-days" value="10" />
+          <span>Câte zile?</span> <input type="number" id="number-of-days" value="7" />
         </div>
         <div>
           <span>Câte versete pe zi?</span> <input type="number" id="verses-per-day" value="2" />
@@ -39,6 +39,10 @@
           <select class="form-select select-start-verse" aria-label="Default select example">
             <option selected hidden>Versetul</option>
           </select>
+        </div>
+        <div>
+          <input type="checkbox" id="include-texts" name="checkbox-include-texts" />
+          <label for="include-texts">Vreau și textul versetelor de învățat</label>
         </div>
         <div>
           <button id="generate">
