@@ -81,4 +81,15 @@ button#export {
   table tr {
     border-bottom: 1px solid #ddd;
   }
+
+  div#form-container div span,
+  div#form-container div input[type=number],
+  div#form-container div input[type=date],
+  div#form-container div select {
+    width: 100%;
+  }
+
+  div#form-container div select {
+    margin-bottom: 10px;
+  }
 }
