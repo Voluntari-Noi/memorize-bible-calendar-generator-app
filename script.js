@@ -5,9 +5,9 @@ window.settings = {
     verse: "Versetul"
   },
   stop: {
-    book: "Cartea",
-    chapter: "Capitolul",
-    verse: "Versetul"
+    book: "Apocalipsa",
+    chapter: "22",
+    verse: "21"
   },
   verses: [
     {
@@ -132,6 +132,8 @@ function generate_consecutive_days(number_of_days, start_date) {
 }
 
 function generate_plan(number_of_days, start_date, verses_per_day) {
+  init_verses();
+
   let days = generate_consecutive_days(number_of_days, start_date);
 
   let start_verse = 0;
@@ -141,8 +143,8 @@ function generate_plan(number_of_days, start_date, verses_per_day) {
     result.push({
       day: day_index,
       date: days[day_index],
-      verse_start: parseInt(start_verse) + 1,
-      verse_stop: parseInt(start_verse) + parseInt(verses_per_day)
+      verse_start: parseInt(start_verse),
+      verse_stop: parseInt(start_verse) + parseInt(verses_per_day) - 1
     });
 
     start_verse = parseInt(start_verse) + parseInt(verses_per_day);
@@ -187,6 +189,128 @@ function show_plan(plan) {
   html_plan += html_b;
   html_plan += "</tbody></table>";
   $("div#result").append(html_plan);
+}
+
+function get_verses_from_chapter(book_index, chapter_index, verse_index, to) {
+  // input: Book index, chapter index, verse index, to = "to end" or number
+  // Return the verses in this chapter starting with verse index until the end or given verse number
+  var result = [];
+  chapter_index = parseInt(chapter_index);
+  verse_index = parseInt(verse_index);
+  if (to !== "to end") {
+    to = parseInt(to);
+  }
+
+  var temp_verses = window.bible_cornilescu[book_index].chapters[chapter_index];
+
+  var index = 0;
+  for (var verse of temp_verses) {
+    if (index >= verse_index) {
+      if (to === "to end") {
+        result.push({
+          reference: window.books[book_index] + " " + (chapter_index + 1) + ":" + (index + 1),
+          text: temp_verses[index],
+          correct: false,
+          tried: false,
+        });
+      } else {
+        if (index <= to) {
+          result.push({
+            reference: window.books[book_index] + " " + (chapter_index + 1) + ":" + (index + 1),
+            text: temp_verses[index],
+            correct: false,
+            tried: false,
+          });
+        }
+      }
+    }
+    index++;
+  }
+
+  return result;
+}
+
+function init_verses() {
+  // Generate the list of texts to be used in exercises, based on the settings
+  if (window.settings.start.book === window.settings.stop.book) {
+    if (window.settings.start.chapter === window.settings.stop.chapter) {
+      // the same book and chapter
+      var all_verses = [];
+      var temp_verses = get_verses_from_chapter(
+        search_book(window.settings.start.book),
+        window.settings.start.chapter - 1,
+        window.settings.start.verse - 1,
+        window.settings.stop.verse - 1
+      );
+      window.settings.verses = temp_verses;
+    } else {
+      // the same book
+      var start_book_index = search_book(window.settings.start.book);
+      var start_chapter_index = window.settings.start.chapter - 1;
+      var stop_chapter_index = window.settings.stop.chapter - 1;
+      var start_verse_index = window.settings.start.verse - 1;
+      var stop_verse_index = window.settings.stop.verse - 1;
+
+      var all_verses = [];
+      var temp_verses = get_verses_from_chapter(start_book_index, start_chapter_index, start_verse_index, "to end");
+
+      for (let v of temp_verses) {
+        all_verses.push(v);
+      }
+
+      var next_chapter = start_chapter_index + 1;
+      while(next_chapter < stop_chapter_index) {
+        temp_verses = get_verses_from_chapter(start_book_index, next_chapter, 0, "to end");
+        for (let v of temp_verses) {
+          all_verses.push(v);
+        }
+        next_chapter++;
+      }
+
+      temp_verses = get_verses_from_chapter(start_book_index, stop_chapter_index, 0, stop_verse_index);
+      for (let v of temp_verses) {
+        all_verses.push(v);
+      }
+      window.settings.verses = all_verses;
+    }
+  } else {
+    // different books
+    var all_verses = [];
+
+    for (var book_index = search_book(window.settings.start.book); book_index <= search_book(window.settings.stop.book); book_index++) {
+      var chapter_start_from = 0;
+      var verse_start_from = 0;
+
+      var book_chapters = window.bible_cornilescu[book_index].chapters.length;
+      var chapter_stop = book_chapters - 1;
+      var verse_stop = "to end";
+
+      if (book_index === search_book(window.settings.start.book)) {
+        chapter_start_from = window.settings.start.chapter - 1;
+        verse_start_from = window.settings.start.verse - 1;
+      }
+
+      if (book_index === search_book(window.settings.stop.book)) {
+        chapter_stop = window.settings.stop.chapter - 1;
+        verse_stop = window.settings.stop.verse - 1;
+      }
+
+      for(var chapter_index = chapter_start_from; chapter_index <= chapter_stop; chapter_index++)  {
+        var temp_verses = get_verses_from_chapter(book_index, chapter_index, verse_start_from, verse_stop);
+        for (let v of temp_verses) {
+          all_verses.push(v);
+        }
+      }
+    }
+    window.settings.verses = all_verses;
+  }
+
+  for (let a_verse of window.settings.verses) {
+    // keep a copy, for correct order, used on read
+    window.settings.all_texts.push(a_verse);
+  }
+
+  window.settings.title = window.settings.title + " (" + window.settings.verses.length + " versete)";
 }
 
 function init() {
