@@ -29,10 +29,10 @@ function generate_plan(number_of_days, start_date, verses_per_day) {
       day: day_index,
       date: days[day_index],
       verse_start: parseInt(start_verse) + 1,
-      verse_stop: parseInt(start_verse) + parseInt(verses_per_day) + 1
+      verse_stop: parseInt(start_verse) + parseInt(verses_per_day)
     });
 
-    start_verse = parseInt(start_verse) + parseInt(verses_per_day) + 1;
+    start_verse = parseInt(start_verse) + parseInt(verses_per_day);
   }
 
   return result;
@@ -65,8 +65,8 @@ function show_plan(plan) {
         "<td> Ziua " +
           (parseInt(item.day) + 1) +
         "</td>" +
-        "<td> Galateni 1:" +
-          (item.verse_start + " - Galateni 1:" + item.verse_stop) +
+        "<td>" +
+          (item.verse_start + " - " + item.verse_stop) +
         "</td>" +
       "</tr>";
   }
