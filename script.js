@@ -378,6 +378,15 @@ function init() {
   init_books_select();
 }
 
+function validate_reference() {
+  let start = window.settings.start;
+  if (start.verse === "Versetul" || start.chapter === "Capitolul" || start.book === "Cartea") {
+    return false;
+  }
+
+  return true;
+}
+
 $(document).ready(function () {
   init();
 
@@ -385,11 +394,17 @@ $(document).ready(function () {
     let days = $("input#number-of-days").val();
     let start_date = $("input#start-date").val();
     let verses_per_day = $("input#verses-per-day").val();
-    let plan = generate_plan(days, start_date, verses_per_day);
-    console.log(plan);
 
-    show_plan(plan);
-    $("button#export").show();
+    let is_valid = validate_reference();
+    if (is_valid) {
+      let plan = generate_plan(days, start_date, verses_per_day);
+      console.log(plan);
+
+      show_plan(plan);
+      $("button#export").show();
+    } else {
+      alert("Nu uita să alegi cartea, capitolul și versetul de unde începi să înveți.");
+    }
   });
 
   $("button#export").on("click", function () {
