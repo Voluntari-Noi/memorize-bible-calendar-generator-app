@@ -6,23 +6,27 @@
     <title>Memorează Biblia - Plan de memorare</title>
   </head>
   <body>
-    <h1>Memorează Biblia - Plan de memorare</h1>
-    <p>Generează-ți un plan de memorare a versetelor din Biblie.</p>
-    <div id="form-container">
-      <div>
-        <span>Când începi?</span> <input type="date" id="start-date" />
+    <div class="container">
+      <h1>Memorează Biblia - Plan de memorare</h1>
+      <p>Generează-ți un plan de memorare a versetelor din Biblie.</p>
+      <div id="form-container">
+        <div>
+          <span>Când începi?</span> <input type="date" id="start-date" />
+        </div>
+        <div>
+          <span>Câte zile?</span> <input type="number" id="number-of-days" value="10" />
+        </div>
+        <div>
+          <span>Câte versete pe zi?</span> <input type="number" id="verses-per-day" value="2" />
+        </div>
+        <div>
+          <button id="generate">Generează planul</button>
+        </div>
       </div>
-      <div>
-        <span>Câte zile?</span> <input type="number" id="number-of-days" value="10" />
-      </div>
-      <div>
-        <span>Câte versete pe zi?</span> <input type="number" id="verses-per-day" value="2" />
-      </div>
-      <div>
-        <button id="generate">Generează planul</button>
+      <div id="result">
+        Aștept să faci setările...
       </div>
     </div>
-    <div id="result"></div>
 
 <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -94,7 +98,7 @@
           "<td>" +
             item.date +
           "</td>" +
-          "<td>" +
+          "<td> Ziua " +
             (parseInt(item.day) + 1) +
           "</td>" +
           "<td>" +
@@ -126,5 +130,41 @@
     })
   });
 </script>
+<style>
+body {
+  background: #999;
+}
+
+div.container {
+  background: #DDD;
+  padding: 10px;
+}
+
+div#result {
+  background: #FFF;
+  padding: 10px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+table th, table td {
+  padding: 2px;
+}
+
+div#form-container div {
+  margin-bottom: 10px;
+}
+
+div#form-container span {
+  display: inline-block;
+  min-width: 150px;
+}
+</style>
   </body>
 </html>
